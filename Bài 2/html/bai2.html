@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">STT</th>
+                    <th scope="col" class="text-center">Hình ảnh</th>
+                    <th scope="col" class="text-center">Giá</th>
+                    <th scope="col" class="text-center">Số lượng</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+
+    <script>
+        const data = [{
+            'image': '../img/chau1.jpg',
+            'price': 20000,
+        }, {
+            'image': '../img/chau2.jpg',
+            'price': 40000,
+        }, {
+            'image': '../img/chau3.jpg',
+            'price': 30000,
+        }, {
+            'image': '../img/chau4.jpg',
+            'price': 50000,
+        }, {
+            'image': '../img/chau5.jpg',
+            'price': 30000,
+        }];
+
+        $(document).ready(function() {
+            const table = $('.table tbody');
+            let total = 0;
+
+            data.forEach((item, index) => {
+                const row = `
+                    <tr>
+                        <th scope="row" class="text-center">${index + 1}</th>
+                        <td class="text-center"><img src="${item.image}" alt="Image" style="width: 200px; height: 200px;"></td>
+                        <td class="text-center">${item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                        <td class="text-center">
+                            <input class="quantityInput" type="number" min="0" value="0">
+                        </td>
+                    </tr>
+                `;
+                table.append(row);
+            });
+
+            updateTotal();
+
+            $('.quantityInput').on('input', function() {
+                updateTotal();
+            });
+
+            function updateTotal() {
+                total = 0;
+
+                $('.quantityInput').each(function() {
+                    const quantity = parseInt($(this).val()) || 0;
+                    const price = parseFloat($(this).closest('tr').find('.text-center:eq(2)').text().replace(/\D/g, ''));
+                    total += quantity * price;
+                });
+
+                $('.table tfoot').remove();
+                const footer = `
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td colspan="3">Tổng:</td>
+                            <td class="text-center">${total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</td>
+                        </tr>
+                    </tfoot>
+                `;
+                table.append(footer);
+            }
+        });
+    </script>
+</body>
+
+</html>

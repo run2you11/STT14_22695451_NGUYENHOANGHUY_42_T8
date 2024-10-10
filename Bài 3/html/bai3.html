@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container mt-4">
+        <form id="registrationForm">
+            <div class="mb-3 row">
+                <label for="name" class="col-3 col-form-label text-end">Họ tên:</label>
+                <div class="col-9">
+                    <input type="text" class="form-control" id="name">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="class" class="col-3 col-form-label text-end">Lớp:</label>
+                <div class="col-9">
+                    <select class="form-select" id="class">
+                        <option value="" selected="selected">Đại học kỹ thuật phần mềm 9A</option>
+                        <option value="">Đại học kỹ thuật phần mềm 8A</option>
+                        <option value="">Đại học kỹ thuật phần mềm 7A</option>
+                        <option value="">Đại học kỹ thuật phần mềm 6A</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="subject" class="col-3 col-form-label text-end">Môn học:</label>
+                <div class="col-9">
+                    <select class="form-select" id="subject">
+                        <option value="" selected="selected">Lập trình hướng đối tượng</option>
+                        <option value="">Cơ sở dữ liệu</option>
+                        <option value="">Cấu trúc dữ liệu và giải thuật</option>
+                        <option value="">Công nghệ web</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-3 col-form-label text-end">Loại:</label>
+                <div class="col-9">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="status" id="theory" value="Lý thuyết">
+                        <label class="form-check-label" for="theory">Lý thuyết</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="status" id="practice" value="Thực hành">
+                        <label class="form-check-label" for="practice">Thực hành</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-9 offset-3">
+                    <button type="button" class="btn btn-primary" id="registerButton">Đăng ký</button>
+                </div>
+            </div>
+        </form>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">Họ tên</th>
+                    <th scope="col" class="text-center">Lớp</th>
+                    <th scope="col" class="text-center">Môn học đăng ký</th>
+                    <th scope="col" class="text-center">Loại</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody"></tbody>
+        </table>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#registerButton').click(function() {
+                const name = $('#name').val();
+                const selectedClass = $('#class option:selected').text();
+                const selectedSubject = $('#subject option:selected').text();
+                const selectedType = $('input[name="status"]:checked').val();
+
+                if (name && selectedClass && selectedSubject && selectedType) {
+                    const newRow = `
+                        <tr>
+                            <td class="text-center">${name}</td>
+                            <td class="text-center">${selectedClass}</td>
+                            <td class="text-center">${selectedSubject}</td>
+                            <td class="text-center">${selectedType}</td>
+                        </tr>
+                    `;
+                    $('#userTableBody').append(newRow);
+
+                    $('#name').val('');
+                    $('#class').val('');
+                    $('#subject').val('');
+                    $('input[name="status"]').prop('checked', false);
+                } else {
+                    alert('Please fill in all the required fields.');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

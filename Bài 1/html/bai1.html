@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/jquery-3.7.1.min.js"></script>
+</head>
+<script>
+    $(document).ready(function() {
+        alert("Chao cac ban");
+    })
+</script>
+
+<body>
+    <script>
+        $(document).ready(function() {
+            $('.register').click(function(e) {
+                e.preventDefault();
+                validateRegistrationForm();
+            });
+
+            function validateRegistrationForm() {
+                validateUsername();
+                validatePassword();
+                validateRePassword();
+                validateFullName();
+                validateDOB();
+                validateAddress();
+                validatePhoneNumber();
+                validateEmail();
+            }
+
+            function validateUsername() {
+                var username = $('#username').val();
+                var pattern = /^[a-zA-Z][a-zA-Z0-9]*[@$!%*?&#^]*$/;
+                if (username == '') {
+                    showError('.error-username', 'Vui lòng nhập tên đăng nhập');
+                } else if (!pattern.test(username)) {
+                    showError('.error-username', 'Tên đăng nhập phải bắt đầu là chữ cái và không được có khoảng trắng');
+                } else {
+                    clearError('.error-username');
+                }
+            }
+
+            function validatePassword() {
+                var password = $('#password').val();
+                var pattern = /^(?=.*\d)(?=.*[A-Z])(?=.*[@$!%*?&#^+])[\s\S]{8,}$/;
+                if (password == '') {
+                    showError('.error-password', 'Vui lòng nhập mật khẩu');
+                } else if (!pattern.test(password)) {
+                    showError('.error-password', 'Mật khẩu phải từ 8 ký tự trở lên, có ít nhất 1 ký tự số, 1 ký tự in hoa, 1 ký tự đặc biệt');
+                } else {
+                    clearError('.error-password');
+                }
+            }
+
+            function validateRePassword() {
+                var rePassword = $('#re-password').val();
+                var password = $('#password').val();
+                if (rePassword == '') {
+                    showError('.error-repassword', 'Vui lòng nhập mật khẩu');
+                } else if (rePassword != password) {
+                    showError('.error-repassword', 'Mật khẩu không chính xác');
+                } else {
+                    clearError('.error-repassword');
+                }
+            }
+
+            function validateFullName() {
+                var name = $('#name').val();
+                var pattern = /^[A-Z][a-z]+ [A-Z][a-z]+$/;
+                if (name == '') {
+                    showError('.error-name', 'Vui lòng nhập họ tên');
+                } else if (!pattern.test(name)) {
+                    showError('.error-name', 'Phải có ít nhất Họ, Tên. Ký tự đầu bắt buộc phải viết hoa');
+                } else {
+                    clearError('.error-name');
+                }
+            }
+
+            function validateDOB() {
+                var dob = $('input[type="date"]').val();
+                var age = calculateAge(dob);
+
+                if (dob == '') {
+                    showError('.error-dob', 'Vui lòng nhập ngày tháng năm sinh');
+                } else if (age < 16) {
+                    showError('.error-dob', 'Bạn phải trên 16 tuổi để đăng ký');
+                } else {
+                    clearError('.error-dob');
+                }
+            }
+
+            function calculateAge(dob) {
+                var today = new Date();
+                var birthDate = new Date(dob);
+                var age = today.getFullYear() - birthDate.getFullYear();
+                var monthDiff = today.getMonth() - birthDate.getMonth();
+
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                return age;
+            }
+
+            function validateAddress() {
+                var address = $('#address').val();
+                if (address == '') {
+                    showError('.error-address', 'Vui lòng nhập địa chỉ');
+                } else {
+                    clearError('.error-address');
+                }
+            }
+
+            function validatePhoneNumber() {
+                var phone = $('#phone').val();
+                var pattern = /^(09|03|07|06|05|04)[0-9]{8}$/;
+                if (phone == '') {
+                    showError('.error-phone', 'Vui lòng nhập số điện thoại');
+                } else if (!pattern.test(phone)) {
+                    showError('.error-phone', 'Vui lòng nhập đúng số điện thoại');
+                } else {
+                    clearError('.error-phone');
+                }
+            }
+
+            function validateEmail() {
+                var email = $('#email').val();
+                var pattern = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+                if (email == '') {
+                    showError('.error-email', 'Vui lòng nhập địa chỉ email');
+                } else if (!pattern.test(email)) {
+                    showError('.error-email', 'Email không chính xác');
+                } else {
+                    clearError('.error-email');
+                }
+            }
+
+            function showError(selector, message) {
+                $(selector).text(message).addClass('error-text');
+            }
+
+            function clearError(selector) {
+                $(selector).text('').removeClass('error-text');
+            }
+        });
+    </script>
+    <div class="container">
+        <div class="row">
+            <h1 class="text-center mb-5 mt-3">ĐĂNG KÝ TÀI KHOẢN</h1>
+            <div class="col-12 text-center">
+                <div class="row mb-3">
+                    <p class="col-1 m-0"></p>
+                    <p class="col-2 m-0 d-flex justify-content-end align-items-center">Tên đăng nhập:</p>
+                    <input type="text" class="col-2 w-50 form-control" placeholder="txtDN" id="username">
+                    <p class="col-3  m-0 d-flex justify-content-start align-items-center error-username" style="color: red;">*</p>
+                </div>
+                <div class="row mb-3">
+                    <p class="col-1 m-0"></p>
+                    <p class="col-2 m-0 d-flex justify-content-end align-items-center">Mật khẩu:</p>
+                    <input type="text" class="col-2 w-50 form-control" placeholder="txtMK" id="password">
+                    <p class="col-3 m-0 d-flex justify-content-start align-items-center error-password" style="color: red;">*</p>
+                </div>
+                <div class="row mb-3">
+                    <p class="col-1 m-0"></p>
+                    <p class="col-2 m-0 d-flex justify-content-end align-items-center">Nhập lại mật khẩu:</p>
+                    <input type="text" class="col-2 w-50 form-control" placeholder="txtNLMK" id="re-password">
+                    <p class="col-3 m-0 d-flex justify-content-start align-items-center error-repassword" style="color: red;">*</p>
+                </div>
+            </div>
+            <h3 class="text-center mb-5 mt-3">THÔNG TIN CÁ NHÂN</h3>
+            <div class="col-12 text-center">
+                <div class="row mb-3">
+                    <p class="col-1 m-0"></p>
+                    <p class="col-2 m-0 d-flex justify-content-end align-items-center">Họ và tên:</p>
+                    <input type="text" class="col-2 w-50 form-control" placeholder="txtName" id="name">
+                    <p class="col-3 m-0 d-flex justify-content-start align-items-center error-name" style="color: red;">* bắt buộc</p>
+                </div>
+                <div class="row mb-3">
+                    <p class="col-1 m-0"></p>
+                    <p class="col-2 m-0 d-flex justify-content-end align-items-center">Ngày sinh:</p>
+                    <input type="date" class="col-2">
+                    <p class="col-3 m-0 d-flex justify-content-start align-items-center error-dob" style="color: red;"></p>
+                </div>
+                <div class="row mb-3">
+                    <p class="col-1 m-0"></p>
+                    <p class="col-2 m-0 d-flex justify-content-end align-items-center">Giới tính:</p>
+                    <div class="col-2 d-flex">
+                        <input type="radio" name="gender"> Nam
+                        <input type="radio" name="gender" style="margin-left: 10px;"> Nữ
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <p class="col-1 m-0"></p>
+                    <p class="col-2 m-0 d-flex justify-content-end align-items-center">Địa chỉ:</p>
+                    <input type="text" class="col-2 w-50 form-control" placeholder="txtDC" id="address">
+                    <p class="col-3 m-0 d-flex justify-content-start align-items-center error-address" style="color: red;"></p>
+                </div>
+                <div class="row mb-3">
+                    <p class="col-1 m-0"></p>
+                    <p class="col-2 m-0 d-flex justify-content-end align-items-center">Điện thoại:</p>
+                    <input type="text" class="col-2 w-50 form-control" placeholder="txtDT" id='phone'>
+                    <p class="col-3 m-0 d-flex justify-content-start align-items-center error-phone" style="color: red;"></p>
+                </div>
+                <div class="row mb-3">
+                    <p class="col-1 m-0"></p>
+                    <p class="col-2 m-0 d-flex justify-content-end align-items-center">Email:</p>
+                    <input type="text" class="col-2 w-50 form-control" placeholder="txtEmail" id="email">
+                    <p class="col-3 m-0 d-flex justify-content-start align-items-center error-email" style="color: red;"></p>
+                </div>
+            </div>
+            <div class="button text-center">
+                <button class="btn btn-dark register">Đăng ký</button>
+                <button class="btn btn-dark close">Hủy</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
